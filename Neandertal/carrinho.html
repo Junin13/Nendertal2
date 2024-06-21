@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="cabecalho-1">
+        <a href="./pagina1.html">
+            <img class="imglogo" src="image/braboLogo.png" alt="">
+        </a>
+        <form action="" class="search-form">
+            <input type="search" name="" placeholder="Buscar..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+        <div class="icones">
+            <div id="search-botao" class="fas fa-search"></div>
+            <a href="#" class="fas fa-heart"></a>
+            <a href="carrinho.html" class="fas fa-shopping-cart"></a>
+            <div id="login-botao" class="fas fa-user"></div>
+            <a href="pagina2.html" class="fas"><img class="usabr" src="./image/usa.png" alt=""></a>
+        </div>
+    </div>
+    <div class="cabecalho-2">
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#suplementos">suplementos</a>
+            <a href="#lancamentos">lancamentos</a>
+            <a href="#reviews">reviews</a>
+            <a href="#roupas">roupas</a>
+        </nav>
+    </div>
+</header>
+
+<section id="carrinho">
+    <h1 class="heading"> <span>Seu Carrinho</span> </h1>
+    <div class="carrinho-container">
+        <table id="carrinho-tabela">
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Ações</th>
+                   
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="total">
+            <h3>Total: $<span id="total-preco">0.00</span></h3>
+            <p id="quantidade-total"></p>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        const carrinhoTabelaBody = document.querySelector('#carrinho-tabela tbody');
+        const totalPrecoElemento = document.getElementById('total-preco');
+        const quantidadeTotalElemento = document.getElementById('quantidade-total');
+
+        function atualizarCarrinho() {
+            carrinhoTabelaBody.innerHTML = '';
+            let totalPreco = 0;
+            let quantidadeTotal = 0;
+
+            carrinho.forEach((produto, index) => {
+                if (!produto.quantidade) {
+                    produto.quantidade = 1; // Garantir que a quantidade esteja definida
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${produto.imagem}" alt="${produto.nome}" style="width: 50px; height: 50px;"></td>
+                    <td>${produto.nome}</td>
+                    <td>$${parseFloat(produto.preco).toFixed(2)}</td>
+                    <td>
+                        <button class="remover-quantidade" data-index="${index}">-</button>
+                        ${produto.quantidade}
+                        <button class="adicionar-quantidade" data-index="${index}">+</button>
+                    </td>
+                    <td><button class="remover-produto" data-index="${index}">Remover</button></td>
+                `;
+                carrinhoTabelaBody.appendChild(row);
+                totalPreco += parseFloat(produto.preco) * produto.quantidade;
+                quantidadeTotal += produto.quantidade;
+            });
+
+            totalPrecoElemento.innerText = totalPreco.toFixed(2);
+            quantidadeTotalElemento.innerText = `Quantidade total de produtos: ${quantidadeTotal}`;
+
+            document.querySelectorAll('.remover-produto').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.getAttribute('data-index');
+                    carrinho.splice(index, 1);
+                    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+                    atualizarCarrinho();
+                });
+            });
+
+            document.querySelectorAll('.remover-quantidade').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.getAttribute('data-index');
+                    if (carrinho[index].quantidade > 1) {
+                        carrinho[index].quantidade--;
+                        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+                        atualizarCarrinho();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.adicionar-quantidade').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const index = event.target.getAttribute('data-index');
+                    carrinho[index].quantidade++;
+                    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+                    atualizarCarrinho();
+                });
+            });
+        }
+
+        atualizarCarrinho();
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const adicionarCarrinhoButtons = document.querySelectorAll('.adicionar-carrinho');
+        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+        adicionarCarrinhoButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const nome = button.getAttribute('data-nome');
+                const preco = button.getAttribute('data-preco');
+                let imagem = button.closest('.swiper-slide').querySelector('.image').src;
+            
+            alert(`${nome} foi adicionado ao carrinho!`);
+
+                const produtoExistente = carrinho.find(produto => produto.nome === nome);
+
+                if (produtoExistente) {
+                    produtoExistente.quantidade += 1;
+                } else {
+                    const produto = { nome, preco, imagem, quantidade: 1 };
+                    carrinho.push(produto);
+                }
+
+                localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+                console.log(`Produto adicionado: Nome - ${nome}, Preço - ${preco}, Imagem - ${imagem}`);
+                alert(`${nome} foi adicionado ao carrinho!`);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

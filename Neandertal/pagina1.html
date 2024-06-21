@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neandertal</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    
+</head>
+<body>
+    <!-- cabeçalho -->
+    <header class="cabecalho">
+        <div class="cabecalho-1">
+            <img class="imglogo" src="image/braboLogo.png" alt="">
+            <form action="" class="search-form">
+                <input type="search" name="" placeholder="Buscar..." id="search-box">
+                <label for="search-box" class="fas fa-search"></label>
+            </form>
+            <div class="icones">
+                <div id="search-botao" class="fas fa-search"></div>
+                <a href="#" class="fas fa-heart"></a>
+                <a href="carrinho.html" class="fas fa-shopping-cart"></a>
+                <div id="login-botao" class="fas fa-user"></div>
+                <a href="pagina2.html" class="fas"><img class="usabr" src="image/usa.png" alt=""></a>
+            </div>
+        </div>
+        <div class="cabecalho-2">
+            <nav class="navbar">
+                <a href="#home">home</a>
+                <a href="#suplementos">suplementos</a>
+                <a href="#lancamentos">lancamentos</a>
+                <a href="#reviews">reviews</a>
+                <a href="#roupas">roupas</a>
+            </nav>
+        </div>
+    </header>
+    <!-- cabeçalho -->
+
+    <!-- barra de navegação -->
+    <nav class="barraNav">
+        <a href="#home" class="fas fa-home"></a>
+        <a href="#suplementos" class="fas fa-list"></a>
+        <a href="#lancamentos" class="fas fa-tags"></a>
+        <a href="#reviews" class="fas fa-comments"></a>
+        <a href="#roupas" class="fas fa-tshirt"></a>
+    </nav>
+    <!-- barra de navegação -->
+
+    <!-- login e cadastro -->
+    <div class="login-container">
+        <div id="close-login-botao" class="fas fa-times"></div>
+        <form id="login-form"> <!-- Adicionado o id 'login-form' ao formulário -->
+            <h3>logar</h3>
+            <span>usuário</span>
+            <input type="email" name="email" class="box" placeholder="digite o seu email" id="email"> <!-- Adicionado o name 'email' ao input -->
+            <span>senha</span>
+            <input type="password" name="senha" class="box" placeholder="digite sua senha" id="senha"> <!-- Adicionado o name 'senha' ao input -->
+            <div class="caixinha">
+                <input type="checkbox" name="" id="lembrarU">
+                <label for="lembrarU">lembrar usuário</label>
+            </div>
+            <input type="submit" value="logar" class="botao">
+            <p>esqueceu a senha? <a href="#">clique aqui</a></p>
+            <p>ainda não tem uma conta? <a href="#criar-conta" id="criar-conta-link">criar conta</a></p>
+            <p>quer atualizar seu cadastro? <a href="#atualizar-cadastro" id="atualizar-cadastro-link">atualizar cadastro</a></p>
+        </form>
+        <div id="cadastro-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-cadastro">&times;</span>
+                <form id="cadastro-form">
+                    <h3>Criar Conta</h3>
+                    <span>Nome</span>
+                    <input type="text" name="nome" class="box" placeholder="Digite seu nome" required>
+                    <span>Email</span>
+                    <input type="email" name="email" class="box" placeholder="Digite seu email" required>
+                    <span>Senha</span>
+                    <input type="password" name="senha" class="box" placeholder="Digite sua senha" required>
+                    <span>Confirmar Senha</span>
+                    <input type="password" name="confirmar_senha" class="box" placeholder="Confirme sua senha" required>
+                    <input type="submit" value="Cadastrar" class="botao">
+                </form>
+                <div id="mensagem"></div>
+            </div>
+        </div>
+        <div id="atualizar-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-atualizar">&times;</span>
+                <form id="update-form">
+                    <h3>Atualizar Cadastro</h3>
+                    <span>Email</span>
+                    <input type="email" name="email" class="box" placeholder="Digite seu email" required>
+                    <span>Nome</span>
+                    <input type="text" name="nome" class="box" placeholder="Digite seu novo nome">
+                    <span>Nova Senha</span>
+                    <input type="password" name="senha" class="box" placeholder="Digite sua nova senha">
+                    <input type="submit" value="Atualizar" class="botao">
+                </form>
+                <div id="update-mensagem"></div>
+            </div>
+        </div>
+    </div>
+
+<!-- Script para Atualizar cadastro -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Abrir modal de atualização de cadastro
+            document.getElementById('atualizar-cadastro-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById('atualizar-modal').style.display = 'block';
+            });
+        
+            // Fechar modal de atualização de cadastro
+            document.getElementById('close-atualizar').addEventListener('click', function() {
+                document.getElementById('atualizar-modal').style.display = 'none';
+            });
+        
+            // Seleciona o formulário de atualização
+            const updateForm = document.getElementById('update-form');
+        
+            // Adiciona um ouvinte para o evento de submit do formulário
+            updateForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Previne o comportamento padrão do formulário
+        
+                // Obtém os valores do formulário
+                const email = updateForm.email.value;
+                const nome = updateForm.nome.value;
+                const senha = updateForm.senha.value;
+        
+                // Seleciona o elemento de mensagem
+                const mensagemElemento = document.getElementById('update-mensagem');
+                mensagemElemento.innerText = ''; // Limpa qualquer mensagem anterior
+        
+                // Cria um objeto com os dados do usuário
+                const novosDados = {};
+                if (nome) novosDados.nome = nome;
+                if (senha) novosDados.senha = senha;
+        
+                // Envia uma requisição PUT para o servidor
+                fetch('http://localhost:3000/update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, novosDados })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('ErroRRRRRRRRRR');
+                    }
+                    return response.json(); // Converte a resposta para JSON
+                })
+                .then(data => {
+                    // Exibe mensagem de sucesso
+                    mensagemElemento.innerText = data.message;
+                    mensagemElemento.style.color = 'green';
+                })
+                .catch(error => {
+                    // Exibe mensagem de erro
+                    mensagemElemento.innerText = error.message;
+                    mensagemElemento.style.color = 'red';
+                });
+            });
+        });
+        
+    </script>
+<!-- Script para Cadastrar -->
+<script>
+    document.getElementById('cadastro-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var nome = event.target.nome.value;
+        var email = event.target.email.value;
+        var senha = event.target.senha.value;
+        var confirmarSenha = event.target.confirmar_senha.value;
+
+        var mensagemElemento = document.getElementById('mensagem');
+        mensagemElemento.innerText = '';
+
+        if (senha !== confirmarSenha) {
+            mensagemElemento.innerText = "As senhas não coincidem.";
+            mensagemElemento.style.color = 'red';
+            return;
+        }
+
+        var usuario = {
+            nome: nome,
+            email: email,
+            senha: senha
+        };
+
+        fetch('http://localhost:3000/cadastro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Erro ao cadastrar');
+            }
+        })
+        .then(data => {
+            mensagemElemento.innerText = data;
+            mensagemElemento.style.color = 'green';
+            event.target.reset();
+        })
+        .catch(error => {
+            mensagemElemento.innerText = error.message;
+            mensagemElemento.style.color = 'red';
+        });
+    });
+
+    document.getElementById('criar-conta-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('cadastro-modal').style.display = 'block';
+    });
+
+    document.getElementById('close-cadastro').onclick = function() {
+        document.getElementById('cadastro-modal').style.display = 'none';
+    };
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('cadastro-modal')) {
+            document.getElementById('cadastro-modal').style.display = 'none';
+        }
+    };
+</script>
+<!-- home -->
+<section class="home" id="home">
+
+    <div class="row">
+
+        <div class="conteudo">
+            <h3>Até 75% de desconto</h3>
+            <p>Suplementos com descontos!</p>
+            <a href="#" class="botao">compre agora</a>
+        </div>
+
+        <div class="swiper suplemento-slide">
+            <div class="swiper-wrapper">
+                <a href="#" class="swiper-slide"><img src="image/sup-1.png" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/sup-2.png" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/sup-3.png" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/sup-4.png" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/sup-5.png" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/sup-6.png" alt=""></a>
+            </div>
+            <img src="image/estante.png" class="estante" alt="">
+        </div>
+
+    </div>
+
+</section>
+
+<!-- home -->
+
+<!-- icones -->
+
+<section class="icones-container">
+
+    <div class="icones">
+        <i class="fas fa-shipping-fast"></i>
+        <div class="conteudo">
+            <h3>frete grátis</h3>
+            <p>em pedidos acima de 100R$</p>
+        </div>
+    </div>
+
+    <div class="icones">
+        <i class="fas fa-lock"></i>
+        <div class="conteudo">
+            <h3>pagamento </h3>
+            <p>pagamento 100% seguro</p>
+        </div>
+    </div>
+
+    <div class="icones">
+        <i class="fas fa-redo-alt"></i>
+        <div class="conteudo">
+            <h3>devoluçoes fáceis</h3>
+            <p>em até 10 dias</p>
+        </div>
+    </div>
+
+    <div class="icones">
+        <i class="fas fa-headset"></i>
+        <div class="conteudo">
+            <h3>suporte 24h</h3>
+            <p>nos ligue em qualquer momento</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- icones -->
+
+<!-- Carrossel home  -->
+
+<section class="suplementos" id="suplementos">
+
+    <h1 class="heading"> <span>suplementos</span> </h1>
+
+    <div class="swiper suplementos-slide">
+
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-1.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>whey chocolate</h3>
+                    <div class="preco">R$2.99 <span>R$150.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="whey chocolate" data-preco="2.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-2.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>leite de whey</h3>
+                    <div class="preco">R$15.99 <span>R$60.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="leite de whey" data-preco="15.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-3.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina louca</h3>
+                    <div class="preco">R$5.99 <span>R$200.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="creatina louca" data-preco="5.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-4.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina</h3>
+                    <div class="preco">R$5.99 <span>R$60.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="creatina" data-preco="5.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-5.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>whey para meninas</h3>
+                    <div class="preco">R$75.99 <span>R$160.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="whey para meninas" data-preco="75.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-6.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>bomba</h3>
+                    <div class="preco">R$3.99 <span>R$70.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="bomba" data-preco="3.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-7.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>veneno</h3>
+                    <div class="preco">R$5.99 <span>R$660.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="veneno" data-preco="5.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-8.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>veneno</h3>
+                    <div class="preco">R$15.99 <span>R$280.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="veneno" data-preco="15.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-9.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>bomba</h3>
+                    <div class="preco">R$1.99 <span>R$200.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="bomba" data-preco="1.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="icones">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="image/sup-10.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>suplemento</h3>
+                    <div class="preco">R$2.99 <span>R$500.99</span></div>
+                    <a href="#" class="botao adicionar-carrinho" data-nome="suplemento" data-preco="2.99">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+    </div>
+
+</section>
+<!--Script pegar imagem carrinho-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('JavaScript carregado');
+        const adicionarCarrinhoButtons = document.querySelectorAll('.adicionar-carrinho');
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+        adicionarCarrinhoButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+
+                // Encontra o elemento pai .swiper-slide mais próximo
+                const swiperSlide = button.closest('.swiper-slide');
+
+                if (swiperSlide) {
+                    // Encontra o elemento com a classe .image dentro de swiper-slide
+                    const imageElement = swiperSlide.querySelector('.image img');
+                    if (imageElement) {
+                        // Obtém o caminho da imagem
+                        const imagem = imageElement.src;
+
+                        const nome = button.getAttribute('data-nome');
+                        const preco = button.getAttribute('data-preco');
+
+                        const produto = { nome, preco, imagem };
+
+                        carrinho.push(produto);
+                        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+                        alert(`${nome} foi adicionado ao carrinho!`);
+                    } else {
+                        console.error('Elemento com a classe .image não encontrado dentro de .swiper-slide.');
+                    }
+                } else {
+                    console.error('Elemento pai .swiper-slide não encontrado.');
+                }
+            });
+        });
+    });
+</script>
+<!-- Carrossel -->
+
+<!-- Novidades -->
+
+<section class="newsletter">
+
+    <form action="">
+        <h3>Fique por dentro das novidades</h3>
+        <input type="email" name="" placeholder="digite seu email" id="" class="box">
+        <input type="submit" value="inscrevase" class="botao">
+    </form>
+
+</section>
+
+<!-- Novidades -->
+
+<!-- lançamentos -->
+
+<section class="lancamentos" id="lancamentos">
+
+    <h1 class="heading"> <span>novos lancamentos</span> </h1>
+
+    <div class="swiper lancamentos-slide">
+
+        <div class="swiper-wrapper">
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-1.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>whey</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <button class="adicionar-carrinho" data-nome="whey" data-preco="15.99">Adicionar ao carrinho</button>
+
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-2.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>whey italac</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-3.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina 300g</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-4.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina 1kg</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-5.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>whey rosa</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="swiper lancamentos-slide">
+
+        <div class="swiper-wrapper">
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-6.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina uva</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-7.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina louca</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-8.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>creatina forte</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-9.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>veneno</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="image/sup-10.png" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>bomba</h3>
+                    <div class="preco">$15.99 <span>$20.99</span></div>
+                    <div class="estrelas">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- lançamentos -->
+
+<!-- oferta do dia  -->
+
+<section class="deal">
+
+    <div class="conteudo">
+        <h3>oferta do dia</h3>
+        <h1>até 50% de desconto</h1>
+        <p>Suplementação com descontos de 50%, só hoje!!!.</p>
+        <a href="#" class="botao">comprar agora</a>
+    </div>
+
+    <div class="image">
+        <img src="image/2d55f2cd658ace6c171aaca82ce9e011 1.png" alt="">
+    </div>
+
+</section>
+
+<!-- oferta do dia -->
+
+<!-- reviews -->
+
+<section class="reviews" id="reviews">
+
+    <h1 class="heading"> <span>reviews dos clientes</span> </h1>
+
+    <div class="swiper reviews-slide">
+
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide box">
+                <img src="image/pic-1.png" alt="">
+                <h3>Cariani</h3>
+                <p>Muito bom mesmo, nota 2.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-2.png" alt="">
+                <h3>Tadala</h3>
+                <p>Faltou um tadala felas vacularizador, mas tirando isso gostei muito.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-3.png" alt="">
+                <h3>Barack Obama</h3>
+                <p>Preços pequenos comparados aos meus, gostei muito!.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+            <div class="swiper-slide box">
+                <img src="image/pic-4.png" alt="">
+                <h3>Leo estronda</h3>
+                <p>Muito bom recomendo.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-5.png" alt="">
+                <h3>leonardo</h3>
+                <p>AAAAAAAAAAAAAA QUE COISA BOA AAAAAAAAAAAAAA APROVADOOOOO.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-6.png" alt="">
+                <h3>will detilli</h3>
+                <p>gostei.</p>
+                <div class="estrelas">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    
+</section>
+
+<!-- reviews fim-->
+
+<!-- roupas -->
+
+<section class="roupas" id="roupas">
+
+    <h1 class="heading"> <span>nossas roupas</span> </h1>
+
+    <div class="swiper roupas-slide">
+
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide box">
+                <div class="image">
+                    <img src="image/blog-1.jpg" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>Roupa masculina </h3>
+                    <p>Regata maromba, linda e leve.</p>
+                    <a href="#" class="botao">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="image">
+                    <img src="image/blog-2.jpg" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>Roupa masculina</h3>
+                    <p>Conjunto regata e calça masculina para malhar.</p>
+                    <a href="#" class="botao">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="image">
+                    <img src="image/blog-3.jpg" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>Roupa masculina</h3>
+                    <p>Regata para marombas.</p>
+                    <a href="#" class="botao">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="image">
+                    <img src="image/blog-4.jpg" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>Roupa feminina</h3>
+                    <p>Conjunto de roupas femininas, bem marcadinhas.</p>
+                    <a href="#" class="botao">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <div class="image">
+                    <img src="image/blog-5.jpg" alt="">
+                </div>
+                <div class="conteudo">
+                    <h3>roupa feminina</h3>
+                    <p>conjunto blusa, calça e tenis.</p>
+                    <a href="#" class="botao">adicionar ao carrinho</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- roupas -->
+
+<!-- footer começo-->
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>nossas localidades</h3>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> são paulo </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> brasília </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> pernambuco </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> acre </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> minas gerais </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> bahia </a>
+        </div>
+
+        <div class="box">
+            <h3>atalhos</h3>
+            <a href="#"> <i class="fas fa-arrow-right"></i> home </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> suplementos </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> lancamentos </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> reviews </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> roupas </a>
+        </div>
+
+        <div class="box">
+            <h3>links</h3>
+            <a href="#"> <i class="fas fa-arrow-right"></i> minha conta </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> meus pedidos </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> políticas de privacidade </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> métodos de pagamento </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> nossos serviços </a>
+        </div>
+
+        <div class="box">
+            <h3>contate-nos</h3>
+            <a href="#"> <i class="fas fa-phone"></i> 4002-8922 </a>
+            <a href="#"> <i class="fas fa-phone"></i> 0800-1234 </a>
+            <a href="#"> <i class="fas fa-envelope"></i> neandertal@gmail.com </a>
+            <img src="image/mapamundo.png" class="mapa" alt="">
+        </div>
+        
+    </div>
+
+    <div class="share">
+        <a href="#" class="fab fa-facebook-f"></a>
+        <a href="#" class="fab fa-twitter"></a>
+        <a href="#" class="fab fa-instagram"></a>
+        <a href="#" class="fab fa-linkedin"></a>
+        <a href="#" class="fab fa-pinterest"></a>
+    </div>
+
+</section>
+
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
+</body>
+<!--Modal-->
+<script>
+    // Pegar os elementos do modal
+    var modal = document.getElementById("cadastro-modal");
+    var btn = document.querySelector("a[href='#criar-conta']");
+    var span = document.getElementById("close-cadastro");
+    
+    // Quando o usuário clicar em "criar conta", abra o modal
+    btn.onclick = function(event) {
+        event.preventDefault();
+        modal.style.display = "block";
+    }
+    
+    // Quando o usuário clicar no 'x', feche o modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // Quando o usuário clicar fora do modal, feche-o
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+</html>
